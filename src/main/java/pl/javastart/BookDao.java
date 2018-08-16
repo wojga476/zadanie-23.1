@@ -48,29 +48,27 @@ public class BookDao {
         }
     }
 
-    public String read(Book book) throws SQLException{
-        final String sql = "select ID, title, author, year,isbn from library.books where id = ?";
-        System.out.println("podaj id ksiazki ktora chcesz wyswietlić");
-        Scanner scanner = new Scanner(System.in);
-        int id = scanner.nextInt();
+    public Book read(String isbn){
+        final String sql = "select ID, title, author, year,isbn from library.books where isbn = ?";
 
         try {
             PreparedStatement prepStmt = connection.prepareStatement(sql);
-            prepStmt.setInt(1, id);
+            prepStmt.setString(1, isbn);
             ResultSet result = prepStmt.executeQuery();
             if (result.next()) {
+                Book book = new Book();
                 book.setId(result.getInt(1));
                 book.setTitle(result.getString(2));
                 book.setAuthor(result.getString(3));
                 book.setYear(result.getInt(4));
                 book.setIsbn(result.getString(5));
                 System.out.println(book.toString());
-                return book.toString();
+                return book;
             }
         } catch (SQLException e) {
             System.out.println("Could not get employee");
         }
-        return "nie znaleziono pozycji o podanym ID";
+        return null;
     }
 
     public void update(Book book) {
@@ -99,11 +97,11 @@ public class BookDao {
         }
     }
 
-    public void delete(int id) {
+    public void delete(Long id) {
         final String sql = "delete from library.books where id = ?";
         try {
             PreparedStatement prepStmt = connection.prepareStatement(sql);
-            prepStmt.setInt(1, id);
+            prepStmt.setLong(1, id);
             prepStmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not delete row");

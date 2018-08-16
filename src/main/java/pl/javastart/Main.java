@@ -80,7 +80,7 @@ public class Main {
             bookDao.update(wczytajDane(book));
             menu();
         } else if(mod.equals("U")) {
-            bookDao.delete(book);
+            bookDao.delete(book.getId());
             menu();
         } else {
             menu();
