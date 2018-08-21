@@ -1,4 +1,5 @@
 package pl.javastart;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -6,18 +7,18 @@ public class Main {
     private BookDao bookDao;
     private Scanner scanner;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Main main = new Main();
         main.run();
     }
 
-    private void run(){
+    private void run() throws SQLException {
         bookDao = new BookDao();
         scanner = new Scanner(System.in);
         menu();
     }
 
-    private void menu(){
+    private void menu() throws SQLException {
         System.out.println("\n1 --> Wczytaj\n2 --> Wyszukaj\n3 --> Wyjdz z programu");
         int choiceMenu = 0;
 
@@ -41,7 +42,7 @@ public class Main {
         }
     }
 
-    private void librarySave(){
+    private void librarySave() throws SQLException {
         Book book = new Book();
         scanner.nextLine();
         bookDao.add(wczytajDane(book));
@@ -66,7 +67,7 @@ public class Main {
         System.out.println("Do zobaczenia");
     }
 
-    private void libraryRead(){
+    private void libraryRead() throws SQLException {
         scanner.nextLine();
         System.out.print("\nPodaj ISBN: ");
         Book book = bookDao.read(scanner.nextLine());

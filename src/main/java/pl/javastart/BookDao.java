@@ -71,24 +71,18 @@ public class BookDao {
         return null;
     }
 
-    public void update(Book book) {
+    public void update(Book book) throws SQLException {
         Scanner scanner = new Scanner(System.in);
-
         final String sql = "update library.books set title=?, author=?, year=?, isbn = ? where id = ?";
+        PreparedStatement prepStmt = connection.prepareStatement(sql);
         try {
-            PreparedStatement prepStmt = connection.prepareStatement(sql);
-            System.out.println("podaj ID ksiazki do edycji");
-            prepStmt.setInt(5, scanner.nextInt());
-            scanner.nextLine();
-            System.out.println("podaj tytul: ");
-            prepStmt.setString(1, scanner.nextLine());
-            System.out.println("podaj autora");
-            prepStmt.setString(2, scanner.nextLine());
-            System.out.println("podaj rok wydania");
-            prepStmt.setInt(3, scanner.nextInt());
-            System.out.println("podaj nr ISBN");
-            prepStmt.setInt(4, scanner.nextInt());
-            prepStmt.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, book.getTitle());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setInt(3, book.getYear());
+            preparedStatement.setString(4, book.getIsbn());
+            preparedStatement.setLong(5, book.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Could not update record");
             e.printStackTrace();
